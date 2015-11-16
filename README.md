@@ -1,4 +1,8 @@
-# loopback-component-fixtures
+# loopback-component-mailer
+
+# Requirements
+
+Redis >= 2.6.12
 
 # Usage
 
