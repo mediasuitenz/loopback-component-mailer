@@ -1,0 +1,29 @@
+{
+  "name": "loopback-component-mailer",
+  "version": "0.0.1",
+  "description": "Mailer component for loopback",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./test/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mediasuitenz/loopback-component-mailer"
+  },
+  "keywords": [
+    "loopback",
+    "component",
+    "mailer"
+  ],
+  "author": "Jonathan Prince <jonathan.prince@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "loopback": "^2.22.2",
+    "loopback-datasource-juggler": "^2.41.0",
+    "merge": "^1.2.0"
+  },
+  "devDependencies": {
+    "chai": "^3.3.0",
+    "mocha": "^2.3.3"
+  }
+}
