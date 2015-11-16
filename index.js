@@ -1,22 +1,34 @@
 var merge = require('merge')
 var kue = require('kue')
 var templater = require('./lib/templater')
+var mail = require('./lib/mail')
 
 module.exports = function (app, options) {
   app.mailer = {}
 
   options = merge({
-    redisHost: 'localhost',
-    redisPort: '6379',
+    email: {
+      protocol: 'smtp',
+      host: '',
+      port: 587,
+      account: '',
+      password: ''
+    },
+    redis: {
+      host: 'localhost',
+      port: '6379'
+    },
     templatePath: '/server/mailer/templates/'
   }, options)
 
   var emails = kue.createQueue({
     redis: {
-      host: options.redisHost,
-      port: options.redisPort
+      host: options.redis.host,
+      port: options.redis.port
     }
   })
+
+  mail.setup(app, options.email)
 
   app.mailer.addToQueue = function (templateName, data) {
     // get template
@@ -27,8 +39,5 @@ module.exports = function (app, options) {
     emails.create('email', emailContent).save()
   }
 
-  emails.process('email', function (email, done) {
-    console.log('processed', email.id)
-    done()
-  })
+  emails.process('email', mail.send)
 }
