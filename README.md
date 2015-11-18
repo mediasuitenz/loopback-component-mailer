@@ -32,6 +32,62 @@ Redis >= 2.6.12
 
 Options:
 
- - `templatePath`
+- `templatePath`
 
   [String] : The location of of the email templates relative to the project root. *(default: '/server/mailer/templates/')*
+
+- `namespace`
+
+  [String] : The name used for attaching to the loopback app object. *(default: 'mailer')*
+
+- `redis`
+
+  [Object] : Config for connection to redis server. *(default: { host: 127.0.0.1, port: 6379 })*
+
+- `email`
+
+  [Object] : Config email transport, currently only sendgrid is supported. *(default: {
+    apiKey: '',
+    transport: 'sendgrid',
+    from: ''
+  })*
+
+**Templates**
+
+Mail templates are in handlebars format. The subject line for the email should be the first line in the template file and is identified using the following format:
+```
+SUBJECT::Your Email Subject
+```
+You can also use handlebars in the subject line, for example:
+```
+SUBJECT::Your Email regarding {{topic}}
+```
+
+**Sending mail from Loopback**
+
+When using the default namespace `mailer`, you can add to the mail queue with the following:
+```js
+  app.mailer.send(templateName, emailData, callback)
+```
+Arguments
+- `templateName`:[string] the name of your email template file
+- `emailData`: [object] example:
+```js
+  {
+    to: <recipient@domain.com>,
+    msgVariables: {
+      subjectVariable: 'New Subject',
+      to: 'Myself',
+      text: 'Integration Test'
+    }
+  }
+```
+  - to: the email address of the recipient
+  - msgVariables: variables for use in the template file
+- `callback`: [function] this function will be called when the mail has been added to the queue
+
+**Testing**
+Local testing reuires the following environment variables:
+- SENDGRID_APIKEY
+- EMAIL_TO
+- EMAIL_FROM
