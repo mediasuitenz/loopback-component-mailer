@@ -1,5 +1,7 @@
 # loopback-component-mailer
 
+This component adds a mailer to loopback. Templating is done with handlebars. The queue is handled by kue/redis. The sole transport is currently sendgrid, but the module is built to be easily extendable.
+
 # Requirements
 
 Redis >= 2.6.12
@@ -87,6 +89,7 @@ Arguments
 - `callback`: [function] this function will be called when the mail has been added to the queue
 
 **Testing**
+
 Local testing reuires the following environment variables:
 - SENDGRID_APIKEY
 - EMAIL_TO
