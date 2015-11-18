@@ -18,11 +18,13 @@
   "author": "Jonathan Prince <jonathan.prince@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "deepmerge": "^0.2.10",
     "handlebars": "^4.0.4",
     "kue": "^0.9.6",
     "loopback": "^2.22.2",
     "loopback-datasource-juggler": "^2.41.0",
-    "merge": "^1.2.0"
+    "sendgrid": "^1.9.2",
+    "striptags": "^2.0.4"
   },
   "devDependencies": {
     "chai": "^3.3.0",

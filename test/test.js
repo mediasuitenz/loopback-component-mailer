@@ -3,6 +3,7 @@ var loopback = require('loopback')
 var expect = require('chai').expect
 var component = require('../')
 var templater = require('../lib/templater')
+var mail = require('../lib/mail')
 var app
 
 describe('templater', function () {
@@ -32,28 +33,73 @@ describe('templater', function () {
       done()
     })
   })
+
+  describe('extracting the subject line', function () {
+    it('should return the subject from the template', function (done) {
+      var templateString = templater.load(templatePath, 'test-email-with-subject')
+      var compiledString = templater.compile(templateString, {subjectVariable: 'Subjects'})
+      var subject = templater.extractSubject(compiledString)
+      var expected = 'Test Subject: Subjects\n'
+      expect(subject).to.equal(expected)
+      done()
+    })
+  })
 })
 
 describe('mailer', function () {
+  describe('calling send', function () {
+    it('should send mail', function (done) {
+      var settings = {
+        apiKey: process.env.SENDGRID_APIKEY,
+        transport: 'sendgrid'
+      }
+      var sendMail = mail(settings)
+      sendMail({
+        to: process.env.EMAIL_TO,
+        from: process.env.EMAIL_FROM,
+        subject: 'Greet the World',
+        text: 'Hello World',
+        html: '<h1>Hello World</h1>'
+      }, function (info) {
+        expect(info.message).to.equal('success')
+        done()
+      })
+    })
+  })
+})
+
+describe('Integration test', function () {
   beforeEach(function () {
     app = loopback()
     app.set('legacyExplorer', false)
     app.use(loopback.rest())
   })
-  var templateName = 'test-email'
+
+  var templateName = 'test-email-with-subject'
   var data = {
-    to: 'test recipient',
-    text: 'test email text'
+    to: process.env.EMAIL_TO,
+    msgVariables: {
+      subjectVariable: 'New Subject',
+      to: 'Myself',
+      text: 'Integration Test'
+    }
   }
 
-  describe('when using defaults', function () {
-    it('should do something', function (done) {
+  describe('adding to the queue', function () {
+    it('should give feedback', function (done) {
       component(app, {
+        email: {
+          transport: 'sendgrid',
+          apiKey: process.env.SENDGRID_APIKEY,
+          from: process.env.EMAIL_FROM
+        },
         templatePath: 'test/templates/'
       })
-      app.mailer.addToQueue(templateName, data)
-      expect('feature').to.be.ok
-      done()
+      app.mailer.addToQueue(templateName, data, function (result) {
+        expect(result).to.be.an('object')
+        expect(result.status).to.equal('added to queue')
+        done()
+      })
     })
   })
 })

@@ -2,20 +2,19 @@ var merge = require('deepmerge')
 var kue = require('kue')
 var templater = require('./lib/templater')
 var mail = require('./lib/mail')
+var striptags = require('striptags')
 
 module.exports = function (app, options) {
   app.mailer = {}
 
   options = merge({
     email: {
-      protocol: 'smtp',
-      host: '',
-      port: 587,
-      account: '',
-      password: ''
+      apiKey: '',
+      transport: 'sendgrid',
+      from: ''
     },
     redis: {
-      host: 'localhost',
+      host: '127.0.0.1',
       port: '6379'
     },
     templatePath: '/server/mailer/templates/'
@@ -28,16 +27,37 @@ module.exports = function (app, options) {
     }
   })
 
-  mail.setup(app, options.email)
+  var sendMail = mail(options.email)
 
-  app.mailer.addToQueue = function (templateName, data) {
-    // get template
+  var createEmailObject = function (templateName, data) {
     var template = templater.load(options.templatePath, templateName)
-    // add data
-    var emailContent = templater.compile(template, data)
-    // send to queue
-    emails.create('email', emailContent).save()
+    var emailContent = templater.compile(template, data.msgVariables)
+    var subject = templater.extractSubject(emailContent)
+    var htmlContent = templater.extractHtml(emailContent)
+    var textContent = striptags(htmlContent)
+
+    return {
+      to: data.to,
+      from: options.email.from,
+      subject: subject,
+      html: htmlContent,
+      text: textContent
+    }
   }
 
-  emails.process('email', mail.send)
+  app.mailer.addToQueue = function (templateName, data, callback) {
+    var email = createEmailObject(templateName, data)
+
+    emails.create('email', email).save(function (err) {
+      if (err) {
+        callback({status: err.message})
+      } else {
+        callback({status: 'added to queue'})
+      }
+    })
+
+    emails.process('email', function (item, callback) {
+      sendMail(item.data, callback)
+    })
+  }
 }
