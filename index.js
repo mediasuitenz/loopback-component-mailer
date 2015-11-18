@@ -1,4 +1,4 @@
-var merge = require('merge')
+var merge = require('deepmerge')
 var kue = require('kue')
 var templater = require('./lib/templater')
 var mail = require('./lib/mail')
