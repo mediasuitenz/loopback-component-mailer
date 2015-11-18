@@ -95,7 +95,7 @@ describe('Integration test', function () {
         },
         templatePath: 'test/templates/'
       })
-      app.mailer.addToQueue(templateName, data, function (result) {
+      app.mailer.send(templateName, data, function (result) {
         expect(result).to.be.an('object')
         expect(result.status).to.equal('added to queue')
         done()

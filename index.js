@@ -8,6 +8,7 @@ module.exports = function (app, options) {
   app.mailer = {}
 
   options = merge({
+    namespace: 'mailer',
     email: {
       apiKey: '',
       transport: 'sendgrid',
@@ -45,7 +46,7 @@ module.exports = function (app, options) {
     }
   }
 
-  app.mailer.addToQueue = function (templateName, data, callback) {
+  app[options.namespace].send = function (templateName, data, callback) {
     var email = createEmailObject(templateName, data)
 
     emails.create('email', email).save(function (err) {
