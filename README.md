@@ -64,6 +64,7 @@ You can also use handlebars in the subject line, for example:
 ```
 SUBJECT::Your Email regarding {{topic}}
 ```
+Template files should have the extension `.hbs`
 
 **Sending mail from Loopback**
 
