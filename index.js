@@ -12,11 +12,12 @@ module.exports = function (app, options) {
     email: {
       apiKey: '',
       transport: 'sendgrid',
-      from: ''
+      from: '',
+      subject: '<no-subject>'
     },
     redis: {
       host: '127.0.0.1',
-      port: '6379'
+      port: 6379
     },
     templatePath: '/server/mailer/templates/'
   }, options)
@@ -33,7 +34,7 @@ module.exports = function (app, options) {
   var createEmailObject = function (templateName, data) {
     var template = templater.load(options.templatePath, templateName)
     var emailContent = templater.compile(template, data.msgVariables)
-    var subject = templater.extractSubject(emailContent)
+    var subject = templater.extractSubject(emailContent) || options.email.subject
     var htmlContent = templater.extractHtml(emailContent)
     var textContent = striptags(htmlContent)
 

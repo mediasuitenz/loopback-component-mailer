@@ -51,7 +51,8 @@ Options:
   [Object] : Config email transport, currently only sendgrid is supported. *(default: {
     apiKey: '',
     transport: 'sendgrid',
-    from: ''
+    from: '',
+    subject: '<no-subject>'
   })*
 
 **Templates**
