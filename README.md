@@ -51,7 +51,8 @@ Options:
   [Object] : Config email transport, currently only sendgrid is supported. *(default: {
     apiKey: '',
     transport: 'sendgrid',
-    from: ''
+    from: '',
+    subject: '<no-subject>'
   })*
 
 **Templates**
@@ -64,6 +65,7 @@ You can also use handlebars in the subject line, for example:
 ```
 SUBJECT::Your Email regarding {{topic}}
 ```
+Template files should have the extension `.hbs`
 
 **Sending mail from Loopback**
 
