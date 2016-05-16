@@ -18,6 +18,7 @@
   "author": "Jonathan Prince <jonathan.prince@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "debug": "^2.2.0",
     "deepmerge": "^0.2.10",
     "handlebars": "^4.0.4",
     "kue": "^0.9.6",
