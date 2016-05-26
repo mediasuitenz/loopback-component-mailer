@@ -1,12 +1,14 @@
+'use strict'
 var merge = require('deepmerge')
 var kue = require('kue')
+var EventEmitter = require('events').EventEmitter
 var templater = require('./lib/templater')
 var mail = require('./lib/mail')
 var striptags = require('striptags')
 var debug = require('debug')('loopback-component-mailer')
 
 module.exports = function (app, options) {
-  app.mailer = {}
+  debug('Setting up mailer Component')
 
   options = merge({
     namespace: 'mailer',
@@ -22,6 +24,8 @@ module.exports = function (app, options) {
     },
     templatePath: '/server/mailer/templates/'
   }, options)
+
+  var mailer = app[options.namespace] = new EventEmitter()
 
   debug('Create email queue')
   var emailQueue = kue.createQueue({
@@ -39,9 +43,15 @@ module.exports = function (app, options) {
     debug('Email from queue is about to be processed')
     sendMail(job.data, function (err, json) {
       if (err) {
-        debug('Error sending email with id: ', job.id)
+        var error = new Error('Error sending mail')
+        error.job = job
+        error.transportError = err
+        mailer.emit('error', error)
+        debug('Error sending email with id: %d', job.id)
+      } else {
+        mailer.emit('success', job)
+        debug('Email with id "%d" was successfully sent.', job.id)
       }
-      debug('Email with id "%d" was successfully sent.', job.id)
       done()
     })
   })
@@ -68,8 +78,9 @@ module.exports = function (app, options) {
 
   // send method pushes email to the mail queue, job processing is handlied in
   // emailQueue.process('email', ...
-  app[options.namespace].send = function (templateName, data, callback) {
+  mailer.send = function (templateName, data, callback) {
     var email = createEmailObject(templateName, data)
+    debug('Add email to queue')
     var job = emailQueue.create('email', email).save(function (err) {
       if (err) {
         debug('Error adding email to queue')
