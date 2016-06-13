@@ -77,8 +77,8 @@ Example:
   "loopback-component-mailer": {
     "email": {
       "apiKey": "<yourApiKey>",
-      "header": "/server/templates/header.html",
-      "footer": "/server/templates/footer.html"
+      "header": "/server/mailer/templates/header.html",
+      "footer": "/server/mailer/templates/footer.html"
     }
   }
 }
