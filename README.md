@@ -67,6 +67,23 @@ SUBJECT::Your Email regarding {{topic}}
 ```
 Template files should have the extension `.hbs`
 
+**HTML Header/Footer**
+
+A static HTML header and/or footer can be added to HTML emails. Specify the path to the header/footer file(s) in the component config.
+
+Example:
+```json
+{
+  "loopback-component-mailer": {
+    "email": {
+      "apiKey": "<yourApiKey>",
+      "header": "/server/templates/header.html",
+      "footer": "/server/templates/footer.html"
+    }
+  }
+}
+```
+
 **Sending mail from Loopback**
 
 When using the default namespace `mailer`, you can add to the mail queue with the following:
