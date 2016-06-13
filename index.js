@@ -66,6 +66,13 @@ module.exports = function (app, options) {
     var htmlContent = templater.extractHtml(emailContent)
     var textContent = striptags(htmlContent)
 
+    if (options.email.header) {
+      htmlContent = templater.addHeader(htmlContent, options.email.header)
+    }
+    if (options.email.footer) {
+      htmlContent = templater.addFooter(htmlContent, options.email.footer)
+    }
+
     debug('Email object will be returned')
     return {
       to: data.to,
