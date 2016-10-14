@@ -61,17 +61,18 @@ module.exports = function (app, options) {
   var createEmailObject = function (templateName, data) {
     debug('Creating email object')
     var template = templater.load(options.templatePath, templateName)
+    if (options.email.header) {
+      debug('Adding email header')
+      template = templater.addHeader(template, options.email.header)
+    }
+    if (options.email.footer) {
+      debug('Adding email footer')
+      template = templater.addFooter(template, options.email.footer)
+    }
     var emailContent = templater.compile(template, data.msgVariables)
     var subject = templater.extractSubject(emailContent) || options.email.subject
     var htmlContent = templater.extractHtml(emailContent)
     var textContent = striptags(htmlContent)
-
-    if (options.email.header) {
-      htmlContent = templater.addHeader(htmlContent, options.email.header)
-    }
-    if (options.email.footer) {
-      htmlContent = templater.addFooter(htmlContent, options.email.footer)
-    }
 
     debug('Email object will be returned')
     return {
