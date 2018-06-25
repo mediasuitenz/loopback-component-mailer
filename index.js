@@ -77,10 +77,13 @@ module.exports = function (app, options) {
     debug('Email object will be returned')
     return {
       to: data.to,
-      from: options.email.from,
+      from: data.from || options.email.from,
       subject: subject,
       html: htmlContent,
-      text: textContent
+      text: textContent,
+      bcc: data.bcc,
+      cc: data.cc,
+      replyto: data.replyto
     }
   }
 

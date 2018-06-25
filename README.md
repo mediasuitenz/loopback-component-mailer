@@ -95,7 +95,11 @@ Arguments
 - `emailData`: [object] example:
 ```js
   {
-    to: <recipient@domain.com>,
+    to: <recipient@domain.com>, // can be an array of recipients
+    from: <sender@domain.com>, // only required if different from the default set in component-config.json
+    bcc: <bcc@domain.com>, // not required, can be an array of recipients
+    cc: <cc@domain.com>, // not required, can be an array of recipients
+    replyto: <replyto@domain.com>, // not required
     msgVariables: {
       subjectVariable: 'New Subject',
       to: 'Myself',
@@ -103,9 +107,13 @@ Arguments
     }
   }
 ```
-  - to: the email address of the recipient
-  - msgVariables: variables for use in the template file
-- `callback`: [function] this function will be called when the mail has been added to the queue
+  - `to`: the email address of the recipient
+  - `from`: the email address of the sender (if different from the default set in component-config.json)
+  - `bcc`: the email address(es) of the blind carbon copy recipient(s)
+  - `cc`: the email address(es) of the carbon copy recipient(s)
+  - `replyto`: the email address to set for reply-to
+  - `msgVariables`: variables for use in the template file
+  - `callback`: [function] this function will be called when the mail has been added to the queue
 
 **Testing**
 
