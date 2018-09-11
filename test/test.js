@@ -60,7 +60,7 @@ describe('mailer', function () {
         subject: 'Greet the World',
         text: 'Hello World',
         html: '<h1>Hello World</h1>'
-      }, function (info) {
+      }, function (err, info) {
         expect(info.message).to.equal('success')
         done()
       })
@@ -95,7 +95,7 @@ describe('Integration test', function () {
         },
         templatePath: 'test/templates/'
       })
-      app.mailer.send(templateName, data, function (result) {
+      app.mailer.send(templateName, data, function (err, result) {
         expect(result).to.be.an('object')
         expect(result.status).to.equal('added to queue')
         done()
