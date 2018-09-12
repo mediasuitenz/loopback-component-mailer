@@ -61,6 +61,7 @@ describe('mailer', function () {
         text: 'Hello World',
         html: '<h1>Hello World</h1>'
       }, function (err, info) {
+        expect(err).to.be.null
         expect(info.message).to.equal('success')
         done()
       })
@@ -96,6 +97,7 @@ describe('Integration test', function () {
         templatePath: 'test/templates/'
       })
       app.mailer.send(templateName, data, function (err, result) {
+        expect(err).to.be.null
         expect(result).to.be.an('object')
         expect(result.status).to.equal('added to queue')
         done()
