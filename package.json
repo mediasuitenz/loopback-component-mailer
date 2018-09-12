@@ -1,6 +1,6 @@
 {
   "name": "loopback-component-mailer",
-  "version": "1.1.1",
+  "version": "1.1.0",
   "description": "Mailer component for loopback",
   "main": "index.js",
   "scripts": {
@@ -22,8 +22,8 @@
     "deepmerge": "^0.2.10",
     "handlebars": "^4.0.4",
     "kue": "^0.11.0",
-    "strong-error-handler": "^3.2.0",
-    "loopback": "^3.22.2",
+    "loopback": "^2.22.2",
+    "loopback-datasource-juggler": "^2.41.0",
     "sendgrid": "^1.9.2",
     "striptags": "^2.0.4"
   },
