@@ -4,11 +4,22 @@ var expect = require('chai').expect
 var component = require('../')
 var templater = require('../lib/templater')
 var mail = require('../lib/mail')
+var nock = require('nock')
+var sgMail = require('@sendgrid/mail')
 var app
 
 describe('templater', function () {
   var templatePath = 'test/templates/'
   var templateName = 'test-email'
+
+  nock('https://api.sendgrid.com')
+    .post('/v3/mail/send')
+    .reply(function (uri, reqBody) {
+      if (!this.req.headers.authorization) {
+        return [401, {errors: [{message: 'Permission denied, wrong credentials'}]}]
+      }
+      return [202, {}]
+    })
 
   describe('loading a template', function () {
     it('should return a template string', function (done) {
@@ -50,19 +61,20 @@ describe('mailer', function () {
   describe('calling send', function () {
     it('should send mail', function (done) {
       var settings = {
-        apiKey: process.env.SENDGRID_APIKEY,
+        apiKey: 'test',
         transport: 'sendgrid'
       }
       var sendMail = mail(settings)
       sendMail({
-        to: process.env.EMAIL_TO,
-        from: process.env.EMAIL_FROM,
+        to: 'recipient',
+        from: 'sender',
         subject: 'Greet the World',
         text: 'Hello World',
         html: '<h1>Hello World</h1>'
-      }, function (err, info) {
-        expect(err).to.be.null
-        expect(info.message).to.equal('success')
+      }, function (err, response) {
+        if (err) return done(err)
+
+        expect(response[0].toJSON().statusCode).to.equal(202)
         done()
       })
     })
