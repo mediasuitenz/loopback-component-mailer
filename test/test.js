@@ -5,7 +5,6 @@ var component = require('../')
 var templater = require('../lib/templater')
 var mail = require('../lib/mail')
 var nock = require('nock')
-var sgMail = require('@sendgrid/mail')
 var app
 
 describe('templater', function () {
@@ -109,7 +108,8 @@ describe('Integration test', function () {
         templatePath: 'test/templates/'
       })
       app.mailer.send(templateName, data, function (err, result) {
-        expect(err).to.be.null
+        if (err) return done(err)
+
         expect(result).to.be.an('object')
         expect(result.status).to.equal('added to queue')
         done()
