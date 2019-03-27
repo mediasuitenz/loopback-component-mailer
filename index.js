@@ -92,7 +92,7 @@ module.exports = function (app, options) {
   mailer.send = function (templateName, data, callback) {
     var email = createEmailObject(templateName, data)
     debug('Add email to queue')
-    var job = emailQueue.create('email', email).save(function (err) {
+    var job = emailQueue.create('email', email).removeOnComplete(true).save(function (err) {
       if (err) {
         debug('Error adding email to queue')
         callback({
