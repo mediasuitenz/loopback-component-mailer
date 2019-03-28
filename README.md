@@ -115,9 +115,3 @@ Arguments
   - `msgVariables`: variables for use in the template file
   - `callback`: [function] this function will be called when the mail has been added to the queue
 
-**Testing**
-
-Local testing reuires the following environment variables:
-- SENDGRID_APIKEY
-- EMAIL_TO
-- EMAIL_FROM

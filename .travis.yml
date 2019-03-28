@@ -1,3 +1,8 @@
 language: node_js
+
 node_js:
-  - "4.2.0"
+  - "6.9"
+  - "8.11"
+
+services:
+  - redis-server

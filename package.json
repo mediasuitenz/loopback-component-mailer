@@ -24,11 +24,12 @@
     "kue": "^0.11.0",
     "strong-error-handler": "^3.2.0",
     "loopback": "^3.22.2",
-    "sendgrid": "^1.9.2",
+    "@sendgrid/mail": "^6.3.1",
     "striptags": "^2.0.4"
   },
   "devDependencies": {
     "chai": "^3.3.0",
-    "mocha": "^2.3.3"
+    "mocha": "^2.3.3",
+    "nock": "^9.6.1"
   }
 }
