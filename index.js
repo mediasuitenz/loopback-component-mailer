@@ -27,6 +27,8 @@ module.exports = function (app, options) {
 
   var mailer = app[options.namespace] = new EventEmitter()
 
+  const logger = app.U.log.child({source: 'loopback-component-mailer'})
+
   debug('Create email queue')
   var emailQueue = kue.createQueue({
     redis: {
@@ -36,7 +38,12 @@ module.exports = function (app, options) {
   })
 
   emailQueue.on('error', function (err) {
+    logger.error('Queue Error', err)
     debug('Queue error: ', err.Error)
+  })
+
+  emailQueue.on('failed', (err) => {
+    logger.error('Queue Failed', err)
   })
 
   emailQueue.process('email', function (job, done) {
@@ -47,9 +54,11 @@ module.exports = function (app, options) {
         error.job = job
         error.transportError = err
         mailer.emit('error', error)
+        logger.error(`Error Sending Email`, error, {job: job.id})
         debug('Error sending email with id: %d', job.id)
       } else {
         mailer.emit('success', job)
+        logger.debug(`Email sent`, json, {job: job.id})
         debug('Email with id "%d" was successfully sent.', job.id)
       }
       done()
