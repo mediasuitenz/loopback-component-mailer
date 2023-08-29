@@ -48,12 +48,21 @@ Options:
 
 - `email`
 
-  [Object] : Config email transport, currently only sendgrid is supported. *(default: {
+  [Object] : Config email transport, currently only sendgrid and mailhog are supported. *(default: {
     apiKey: '',
     transport: 'sendgrid',
     from: '',
     subject: '<no-subject>'
   })*
+
+  The apiKey is required for sendgrid only.
+
+  You can use Mailhog to capture and display emails in local development.  The simplest way is to spin up Mailhog
+  in a docker container:
+
+  `docker run -p 8025:8025 -p 1025:1025 mailhog/mailhog`
+
+  You can then browse to localhost:8025 to see the emails that have been sent.
 
 **Templates**
 

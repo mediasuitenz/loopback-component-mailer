@@ -1,6 +1,6 @@
 {
   "name": "loopback-component-mailer",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Mailer component for loopback",
   "main": "index.js",
   "scripts": {
@@ -18,14 +18,15 @@
   "author": "Jonathan Prince <jonathan.prince@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@sendgrid/mail": "^6.3.1",
     "debug": "^2.2.0",
     "deepmerge": "^0.2.10",
     "handlebars": "^4.0.4",
     "kue": "^0.11.0",
-    "strong-error-handler": "^3.2.0",
     "loopback": "^3.22.2",
-    "@sendgrid/mail": "^6.3.1",
-    "striptags": "^2.0.4"
+    "mailhog": "^4.16.0",
+    "striptags": "^2.0.4",
+    "strong-error-handler": "^3.2.0"
   },
   "devDependencies": {
     "chai": "^3.3.0",
