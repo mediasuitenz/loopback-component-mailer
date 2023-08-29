@@ -62,7 +62,19 @@ Options:
 
   `docker run -p 8025:8025 -p 1025:1025 mailhog/mailhog`
 
-  You can then browse to localhost:8025 to see the emails that have been sent.
+  You can then browse to localhost:8025 to see the emails that have been sent. If you run mailhog on non-default
+  host or port (localhost:1025) then add the host and port into the configuration in your component-config.json:
+  ```json
+  {
+    "loopback-component-mailer": {
+      "email": {
+        "host": "not-localhost",
+        "port": 1212,
+        "transport": "mailhog"
+        }
+     }
+  }
+  ```
 
 **Templates**
 

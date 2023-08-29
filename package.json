@@ -24,7 +24,6 @@
     "handlebars": "^4.0.4",
     "kue": "^0.11.0",
     "loopback": "^3.22.2",
-    "mailhog": "^4.16.0",
     "striptags": "^2.0.4",
     "strong-error-handler": "^3.2.0"
   },
