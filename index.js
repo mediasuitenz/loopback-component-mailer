@@ -8,7 +8,7 @@ var striptags = require('striptags')
 var debug = require('debug')('loopback-component-mailer')
 
 module.exports = function (app, options) {
-  debug('Setting up mailer Component')
+  debug('Setting up mailer Component', options)
 
   options = merge({
     namespace: 'mailer',
@@ -83,7 +83,8 @@ module.exports = function (app, options) {
       text: textContent,
       bcc: data.bcc,
       cc: data.cc,
-      replyto: data.replyto
+      replyto: data.replyto,
+      attachments: data.attachments
     }
   }
 
